@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Be My Valentine?</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
     body {
@@ -20,32 +20,40 @@
 
     h1 {
       color: #ff4d6d;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     .buttons {
       margin-top: 20px;
+      position: relative;
     }
 
     button {
       font-size: 18px;
-      padding: 12px 24px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      position: relative;
     }
 
+    /* YES BUTTON (fixed padding & centering) */
     #yes-button {
       background-color: #ff4d6d;
       color: white;
-      width: 50px;
-      height: 50px;
+      min-width: 70px;
+      min-height: 50px;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      transition: padding 0.25s ease;
     }
 
+    /* NO BUTTON (runs away) */
     #no-button {
       background-color: #ccc;
       color: #333;
+      padding: 12px 24px;
       position: absolute;
       transition: left 0.2s ease, top 0.2s ease;
     }
@@ -54,6 +62,7 @@
       display: none;
       font-size: 26px;
       color: #ff4d6d;
+      margin-top: 30px;
     }
   </style>
 </head>
@@ -68,7 +77,7 @@
     </div>
 
     <div class="message" id="success-message">
-      Yepppieee 🥰  
+      Yepppieee 🥰<br />
       See you sooooon ❤️
     </div>
   </div>
@@ -94,8 +103,8 @@
     const message = document.getElementById("success-message");
     const buttons = document.querySelector(".buttons");
 
-    let i = 1;
-    let size = 50;
+    let index = 1;
+    let grow = 0;
 
     function moveNoButton() {
       const padding = 20;
@@ -109,23 +118,23 @@
       noButton.style.top = `${y}px`;
     }
 
-    // Start running away immediately
+    // Start running immediately
     moveNoButton();
 
     noButton.addEventListener("mouseover", moveNoButton);
     noButton.addEventListener("touchstart", moveNoButton);
 
     noButton.addEventListener("click", () => {
-      const sizes = [30, 40, 50];
-      size += sizes[Math.floor(Math.random() * sizes.length)];
-      yesButton.style.width = size + "px";
-      yesButton.style.height = size + "px";
+      // Grow YES button via padding (safe & clean)
+      grow += 6;
+      yesButton.style.padding = `${12 + grow}px ${24 + grow * 2}px`;
 
-      if (i < answersNo.length) {
-        noButton.textContent = answersNo[i];
-        i++;
+      // Change NO text
+      if (index < answersNo.length) {
+        noButton.textContent = answersNo[index];
+        index++;
       } else {
-        i = 1;
+        index = 1;
         noButton.textContent = answersNo[0];
       }
 
@@ -140,3 +149,4 @@
 
 </body>
 </html>
+
