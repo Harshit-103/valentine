@@ -3,9 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <title>Be My Valentine?</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Mobile essentials -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       height: 100vh;
@@ -16,16 +22,21 @@
       justify-content: center;
       text-align: center;
       overflow: hidden;
+      padding: 16px;
     }
 
     h1 {
       color: #ff4d6d;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
+      font-size: clamp(22px, 5vw, 28px);
     }
 
+    /* Center movement zone */
     .buttons {
       margin-top: 20px;
       position: relative;
+      width: min(90vw, 320px);
+      height: 200px;
     }
 
     button {
@@ -33,34 +44,36 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      touch-action: manipulation;
     }
 
-    /* YES BUTTON (fixed padding & centering) */
+    /* YES BUTTON */
     #yes-button {
       background-color: #ff4d6d;
       color: white;
-      min-width: 70px;
+      min-width: 80px;
       min-height: 50px;
       padding: 12px 24px;
       display: flex;
       align-items: center;
       justify-content: center;
       white-space: nowrap;
+      margin: 0 auto;
       transition: padding 0.25s ease;
     }
 
-    /* NO BUTTON (runs away) */
+    /* NO BUTTON */
     #no-button {
       background-color: #ccc;
       color: #333;
       padding: 12px 24px;
       position: absolute;
-      transition: left 0.2s ease, top 0.2s ease;
+      transition: left 0.15s ease, top 0.15s ease;
     }
 
     .message {
       display: none;
-      font-size: 26px;
+      font-size: clamp(22px, 6vw, 26px);
       color: #ff4d6d;
       margin-top: 30px;
     }
@@ -71,7 +84,7 @@
   <div id="content">
     <h1>Nancy, will you be my Valentine? 💖</h1>
 
-    <div class="buttons">
+    <div class="buttons" id="button-area">
       <button id="yes-button">Yes</button>
       <button id="no-button">No</button>
     </div>
@@ -101,15 +114,14 @@
     const noButton = document.getElementById("no-button");
     const yesButton = document.getElementById("yes-button");
     const message = document.getElementById("success-message");
-    const buttons = document.querySelector(".buttons");
+    const buttonArea = document.getElementById("button-area");
 
     let index = 1;
     let grow = 0;
 
     function moveNoButton() {
-      const padding = 20;
-      const maxX = window.innerWidth - noButton.offsetWidth - padding;
-      const maxY = window.innerHeight - noButton.offsetHeight - padding;
+      const maxX = buttonArea.clientWidth - noButton.offsetWidth;
+      const maxY = buttonArea.clientHeight - noButton.offsetHeight;
 
       const x = Math.random() * maxX;
       const y = Math.random() * maxY;
@@ -118,18 +130,17 @@
       noButton.style.top = `${y}px`;
     }
 
-    // Start running immediately
+    // Start positioned nicely
     moveNoButton();
 
+    // Desktop + Mobile interactions
     noButton.addEventListener("mouseover", moveNoButton);
     noButton.addEventListener("touchstart", moveNoButton);
 
     noButton.addEventListener("click", () => {
-      // Grow YES button via padding (safe & clean)
       grow += 6;
       yesButton.style.padding = `${12 + grow}px ${24 + grow * 2}px`;
 
-      // Change NO text
       if (index < answersNo.length) {
         noButton.textContent = answersNo[index];
         index++;
@@ -142,11 +153,10 @@
     });
 
     yesButton.addEventListener("click", () => {
-      buttons.style.display = "none";
+      buttonArea.style.display = "none";
       message.style.display = "block";
     });
   </script>
 
 </body>
 </html>
-
