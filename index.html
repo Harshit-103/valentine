@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Be My Valentine?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #ffe6eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    h1 {
+      color: #ff4d6d;
+      margin-bottom: 20px;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    #yes-button {
+      background-color: #ff4d6d;
+      color: white;
+      width: 50px;
+      height: 50px;
+    }
+
+    #no-button {
+      background-color: #ccc;
+      color: #333;
+      position: absolute;
+      transition: left 0.2s ease, top 0.2s ease;
+    }
+
+    .message {
+      display: none;
+      font-size: 26px;
+      color: #ff4d6d;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="content">
+    <h1>Nancy, will you be my Valentine? 💖</h1>
+
+    <div class="buttons">
+      <button id="yes-button">Yes</button>
+      <button id="no-button">No</button>
+    </div>
+
+    <div class="message" id="success-message">
+      Yepppieee 🥰  
+      See you sooooon ❤️
+    </div>
+  </div>
+
+  <script>
+    const answersNo = [
+      "No",
+      "Are you sure?",
+      "Really sure?",
+      "Think again?",
+      "You’re breaking my heart 💔",
+      "Please?",
+      "Pretty please?",
+      "Okay now that hurts 😢",
+      "You’re being mean!",
+      "Give me a chance!",
+      "I’m begging you!",
+      "Okay… start over."
+    ];
+
+    const noButton = document.getElementById("no-button");
+    const yesButton = document.getElementById("yes-button");
+    const message = document.getElementById("success-message");
+    const buttons = document.querySelector(".buttons");
+
+    let i = 1;
+    let size = 50;
+
+    function moveNoButton() {
+      const padding = 20;
+      const maxX = window.innerWidth - noButton.offsetWidth - padding;
+      const maxY = window.innerHeight - noButton.offsetHeight - padding;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      noButton.style.left = `${x}px`;
+      noButton.style.top = `${y}px`;
+    }
+
+    // Start running away immediately
+    moveNoButton();
+
+    noButton.addEventListener("mouseover", moveNoButton);
+    noButton.addEventListener("touchstart", moveNoButton);
+
+    noButton.addEventListener("click", () => {
+      const sizes = [30, 40, 50];
+      size += sizes[Math.floor(Math.random() * sizes.length)];
+      yesButton.style.width = size + "px";
+      yesButton.style.height = size + "px";
+
+      if (i < answersNo.length) {
+        noButton.textContent = answersNo[i];
+        i++;
+      } else {
+        i = 1;
+        noButton.textContent = answersNo[0];
+      }
+
+      moveNoButton();
+    });
+
+    yesButton.addEventListener("click", () => {
+      buttons.style.display = "none";
+      message.style.display = "block";
+    });
+  </script>
+
+</body>
+</html>
